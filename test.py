@@ -166,12 +166,12 @@ def test(data,
             if save_json:
                 # [{"image_id": 42, "category_id": 18, "bbox": [258.15, 41.29, 348.26, 243.78], "score": 0.236}, ...
                 image_id = int(path.stem) if path.stem.isnumeric() else path.stem
-                box = xyxy2xywh(predn[:, :4])  # xywh
-                box[:, :2] -= box[:, 2:] / 2  # xy center to top-left corner
+                box = predn[:, :4]
+                #box[:, :2] -= box[:, 2:] / 2  # xy center to top-left corner
                 for p, b in zip(pred.tolist(), box.tolist()):
                     jdict.append({'image_id': image_id,
                                   'category_id': coco91class[int(p[5])] if is_coco else int(p[5]),
-                                  'bbox': [round(x, 3) for x in b],
+                                  'bbox': [round(x) for x in b],
                                   'score': round(p[4], 5)})
 
             # Assign all predictions as incorrect
